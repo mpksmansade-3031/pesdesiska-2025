@@ -2,8 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Widgets\OsisVoteChart;
-use App\Filament\Widgets\MpkVoteChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -37,12 +35,10 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            /* ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets') */
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
-                OsisVoteChart::class,
-                MpkVoteChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

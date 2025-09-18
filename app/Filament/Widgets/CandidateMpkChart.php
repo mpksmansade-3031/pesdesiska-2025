@@ -2,32 +2,33 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Student;
 use App\Models\Candidate;
+use App\Models\Student;
 use Filament\Widgets\ChartWidget;
 
-class MpkVoteChart extends ChartWidget
+class CandidateMpkChart extends ChartWidget
 {
     protected static ?string $heading = 'Hasil Pemilihan Ketua MPK';
 
     protected function getData(): array
     {
         $candidates = Candidate::where('type', 'Ketua MPK')->get();
-
         $labels = [];
-        $data = [];
+        $votes = [];
 
-        foreach ($candidates as $candidate) {
-            $labels[] = $candidate->nama;
-            $data[] = Student::where('pilih_mpk', $candidate->id)->count();
+        foreach ($candidates as $c) {
+            $labels[] = $c->nama;
+            $votes[] = Student::where('role', 'perwakilan_kelas')
+                            ->where('pilih_mpk', $c->id)
+                            ->count();
         }
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Jumlah Suara',
-                    'data' => $data,
-                    'backgroundColor' => ['#6366f1', '#14b8a6', '#eab308', '#dc2626'],
+                    'label' => 'Suara MPK',
+                    'data' => $votes,
+                    'backgroundColor' => '#10b981',
                 ],
             ],
             'labels' => $labels,
@@ -36,6 +37,6 @@ class MpkVoteChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'bar'; // bisa diganti 'pie'
+        return 'pie'; // Bisa bar / doughnut / pie sesuai selera
     }
 }

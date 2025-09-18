@@ -2,32 +2,31 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Student;
 use App\Models\Candidate;
+use App\Models\Student;
 use Filament\Widgets\ChartWidget;
 
-class OsisVoteChart extends ChartWidget
+class CandidateOsisChart extends ChartWidget
 {
     protected static ?string $heading = 'Hasil Pemilihan Ketua OSIS';
 
     protected function getData(): array
     {
         $candidates = Candidate::where('type', 'Ketua OSIS')->get();
-
         $labels = [];
-        $data = [];
+        $votes = [];
 
-        foreach ($candidates as $candidate) {
-            $labels[] = $candidate->nama;
-            $data[] = Student::where('pilih_osis', $candidate->id)->count();
+        foreach ($candidates as $c) {
+            $labels[] = $c->nama;
+            $votes[] = Student::where('pilih_osis', $c->id)->count();
         }
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Jumlah Suara',
-                    'data' => $data,
-                    'backgroundColor' => ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
+                    'label' => 'Suara OSIS',
+                    'data' => $votes,
+                    'backgroundColor' => '#3b82f6',
                 ],
             ],
             'labels' => $labels,
@@ -36,6 +35,6 @@ class OsisVoteChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'bar'; // bisa diganti 'pie' atau 'doughnut'
+        return 'pie'; // Bisa bar / doughnut / pie sesuai selera
     }
 }
