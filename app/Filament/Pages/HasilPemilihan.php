@@ -20,7 +20,7 @@ class HasilPemilihan extends Page
         return [
             StudentVoteStats::class,
             CandidateOsisChart::class,
-            CandidateMpkChart::class,
+            CandidateMpkChart::class, 
         ];
     }
 }
